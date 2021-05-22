@@ -1,0 +1,10 @@
+server {
+  listen *:80;
+  server_name pxe-test;
+  access_log /var/log/nginx/pxe-test.log;
+  location / {
+    root /var/lib/tftpboot/;
+    index index.htm index.html;
+    autoindex on;
+  }
+}
