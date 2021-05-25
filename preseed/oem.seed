@@ -1,13 +1,19 @@
 # Locales
-d-i debian-installer/locale string ru_RU.UTF-8
-d-i keyboard-configuration/xkb-keymap select ru
+d-i debian-installer/language string en
+d-i debian-installer/country string RU
+d-i debian-installer/locale string en_US.UTF-8
+d-i localechooser/supported-locales en_US.UTF-8, ru_RU.UTF-8
 
-# Keyboard
-d-i	localechooser/shortlist	select	RU
-d-i console-setup/ask_detect boolean false
-d-i console-setup/layoutcode string ru
-d-i	console-setup/variant	select	Россия
-d-i	console-setup/toggle	select	Alt+Shift
+# Keyboard selection.
+# Disable automatic (interactive) keymap detection.
+#d-i console-setup/ask_detect boolean false
+#d-i keyboard-configuration/xkb-keymap select us
+# To select a variant of the selected layout:
+#d-i keyboard-configuration/xkb-keymap select us(dvorak)
+# d-i keyboard-configuration/toggle select No toggling
+
+#Set hostname
+d-i netcfg/hostname string Ubuntu-srv1
 
 # Network
 #d-i netcfg/choose_interface select auto
@@ -19,6 +25,7 @@ d-i	console-setup/toggle	select	Alt+Shift
 d-i clock-setup/utc boolean true
 d-i time/zone string Europe/Moscow
 d-i clock-setup/ntp boolean true
+d-i clock-setup/ntp-server string ntp1.selectel.org
 
 # Users
 d-i passwd/root-login boolean true
@@ -33,40 +40,24 @@ d-i user-setup/encrypt-home boolean false
 # Partitioning
 d-i partman-auto/method string raid
 d-i partman-auto/disk string /dev/sda /dev/sdb
-d-i partman-auto/expert_recipe string \
-      multiraid ::                                         \
-              40 50 100 raid                               \
-                      $primary{ } method{ raid }           \
-              .                                            \
-              1000 1000 4000 raid                          \
-                      method{ raid }                       \
-              .                                            \
-              1500 500 1500 raid                           \
-                      method{ raid }                       \
-              .                                            \
-              100 100 50% raid                             \
-                      method{ raid }                       \
-              .
+d-i partman-auto/expert_recipe string                                    \
+      multiraid ::                                                       \
+              1000 5000 -1 raid                                          \
+                      $primary{ } method{ raid }  $bootable{ } format{ } \
+          .
 
 d-i partman-auto-raid/recipe string \
-    1 2 0 ext3 /boot                \
+    1 2 0 ext3 /                    \
           /dev/sda1#/dev/sdb1       \
-    .                               \
-    1 2 0 ext4 /                    \
-          /dev/sda7#/dev/sdb7       \
-    .                               \
-    1 2 0 ext4 /bla                 \
-          /dev/sda6#/dev/sdb6       \
-    .                               \
-    1 2 0 swap -                    \
-          /dev/sda5#/dev/sdb5       \
-    .
-
+.
 d-i partman-md/confirm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-md/confirm_nooverwrite  boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
+d-i partman-basicfilesystems/no_swap boolean false
 
 # GRUB
 d-i grub-installer/only_debian boolean true
@@ -74,15 +65,11 @@ d-i grub-installer/with_other_os boolean true
 grub-installer	grub-installer/choose_bootdev	select	/dev/sda
 
 # APT
-d-i apt-setup/restricted boolean true
-d-i apt-setup/universe boolean true
-d-i apt-setup/multiverse boolean true
 d-i apt-setup/non-free boolean true
-d-i mirror/ftp/proxy string
-d-i mirror/http/proxy string
-
+d-i apt-setup/contrib boolean true
 # At last
 d-i finish-install/reboot_in_progress note
+d-i finish-install/keep-consoles boolean true
 
 # Packages
 tasksel tasksel/first multiselect standard, web-server, ssh-server
