@@ -1,0 +1,89 @@
+#cloud-config
+autoinstall:
+  apt:
+    geoip: true
+    preserve_sources_list: false
+    primary:
+    - arches: [amd64, i386]
+      uri: http://ru.archive.ubuntu.com/ubuntu
+    - arches: [default]
+      uri: http://ports.ubuntu.com/ubuntu-ports
+  identity: {hostname: ubunte-efi, password: $6$c8E10D5PWZMcCzro$AUDHKm9hZMgS8KxMdUG.20jhCVFSYorHEzNVqhfY51MWMqg82NdKpgwuhFwN82SvaICRKLKNWKHqk6f/k9BHt1,
+    realname: ubuntu, username: ubuntu}
+  keyboard: {layout: us, toggle: null, variant: ''}
+  locale: en_US
+  network:
+    ethernets:
+      ens3:
+        addresses: [192.168.1.26/24]
+        critical: true
+        dhcp-identifier: mac
+        gateway4: 192.168.1.1
+        nameservers:
+          addresses: [8.8.8.8]
+    version: 2
+  ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: true
+  storage:
+    config:
+    - {ptable: gpt, serial: QEMU_HARDDISK_QM00005, path: /dev/sda, wipe: superblock-recursive,
+      preserve: false, name: '', grub_device: false, type: disk, id: disk-sda}
+    - {ptable: gpt, serial: QEMU_HARDDISK_QM00007, path: /dev/sdb, wipe: superblock-recursive,
+      preserve: false, name: '', grub_device: false, type: disk, id: disk-sdb}
+    - {device: disk-sda, size: 536870912, wipe: superblock, flag: boot, number: 1,
+      preserve: false, grub_device: true, type: partition, id: partition-6}
+    - {fstype: fat32, volume: partition-6, preserve: false, type: format, id: format-6}
+    - {device: disk-sda, size: 536870912, wipe: superblock, flag: '', number: 2, preserve: false,
+      type: partition, id: partition-7}
+    - {device: disk-sda, size: 1610612736, wipe: superblock, flag: '', number: 3,
+      preserve: false, type: partition, id: partition-9}
+    - {device: disk-sdb, size: 536870912, wipe: superblock, flag: boot, number: 1,
+      preserve: false, grub_device: true, type: partition, id: partition-11}
+    - {fstype: fat32, volume: partition-11, preserve: false, type: format, id: format-9}
+    - {device: disk-sda, size: 8050966528, wipe: superblock, flag: '', number: 4,
+      preserve: false, type: partition, id: partition-12}
+    - {device: disk-sdb, size: 536870912, wipe: superblock, flag: '', number: 2, preserve: false,
+      type: partition, id: partition-8}
+    - {device: disk-sdb, size: 1610612736, wipe: superblock, flag: '', number: 3,
+      preserve: false, type: partition, id: partition-10}
+    - {device: disk-sdb, size: 8050966528, wipe: superblock, flag: '', number: 4,
+      preserve: false, type: partition, id: partition-13}
+    - name: md0
+      raidlevel: raid1
+      devices: [partition-7, partition-8]
+      spare_devices: []
+      preserve: false
+      ptable: gpt
+      type: raid
+      id: raid-4
+    - name: md1
+      raidlevel: raid1
+      devices: [partition-10, partition-9]
+      spare_devices: []
+      preserve: false
+      ptable: gpt
+      type: raid
+      id: raid-5
+    - name: md2
+      raidlevel: raid1
+      devices: [partition-12, partition-13]
+      spare_devices: []
+      preserve: false
+      ptable: gpt
+      type: raid
+      id: raid-6
+    - {device: raid-4, size: 530579456, wipe: superblock, flag: '', number: 1, preserve: false,
+      type: partition, id: partition-14}
+    - {fstype: ext4, volume: partition-14, preserve: false, type: format, id: format-10}
+    - {device: raid-5, size: 1604321280, wipe: superblock, flag: '', number: 1, preserve: false,
+      type: partition, id: partition-15}
+    - {fstype: ext4, volume: partition-15, preserve: false, type: format, id: format-11}
+    - {device: raid-6, size: 8041529344, wipe: superblock, flag: '', number: 1, preserve: false,
+      type: partition, id: partition-16}
+    - {fstype: ext4, volume: partition-16, preserve: false, type: format, id: format-12}
+    - {device: format-12, path: /, type: mount, id: mount-7}
+    - {device: format-10, path: /boot, type: mount, id: mount-5}
+    - {device: format-11, path: /bla, type: mount, id: mount-6}
+    - {device: format-6, path: /boot/efi, type: mount, id: mount-4}
