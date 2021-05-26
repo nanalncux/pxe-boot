@@ -89,7 +89,7 @@ d-i preseed/late_command string \
 wget http://192.168.1.1/iface-get-static.sh -O /target/tmp/iface-get-static.sh && \
 chmod +x /target/tmp/iface-get-static.sh && \
 in-target /bin/bash /tmp/iface-get-static.sh $$ \
-rm /target/tmp/iface-get-static.sh
+rm /target/tmp/iface-get-static.sh; \
 in-target apt-get install openssh-server
 
 # At last
