@@ -1,6 +1,6 @@
 #!/bin/bash
 iface1=$(ip a |grep mtu | grep -v lo |head -n1 | sed 's/\://g' | awk '{print $2}')
-cat > /target/etc/netplan/00-unstaller-config.yaml << EOF
+cat > /etc/netplan/00-unstaller-config.yaml << EOF
 network:
   version: 2
   renderer: networkd
@@ -14,4 +14,4 @@ network:
         - 8.8.8.8
         - 8.8.4.4
 EOF
-rm -f /target/etc/netplan/01-netcfg.yaml
+rm -f /etc/netplan/01-netcfg.yaml

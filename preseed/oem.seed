@@ -79,23 +79,19 @@ grub-installer	grub-installer/choose_bootdev	select	/dev/sda
 # APT
 d-i apt-setup/non-free boolean true
 d-i apt-setup/contrib boolean true
-# At last
-d-i finish-install/reboot_in_progress note
-d-i finish-install/keep-consoles boolean true
 
 # Packages
 tasksel tasksel/first multiselect standard, web-server
 
 #Run Customscript
-#in-target chsh -s /bin/bash ; \
-#in-target wget http://192.168.1.1/iface-get-static.sh ; \
-#in-target sh chmod +x iface-get-static.sh ;
-#in-target sh iface-get-static.sh ;
-#in-target rm iface-get-static.sh ;
 
-d-i preseed/late_command string in-target wget -P /tmp/ http://192.168.1.1/iface-get-static.sh; in-target chmod $+x /tmp/iface-get-static.sh; in-target /tmp/iface-get-static.sh`
+d-i preseed/late_command string \
+wget http://192.168.1.1/iface-get-static.sh -O /target/tmp/iface-get-static.sh && \
+chmod +x /target/tmp/iface-get-static.sh && \
+in-target /bin/bash /tmp/iface-get-static.sh $$ \
+rm /target/tmp/iface-get-static.sh
+in-target apt-get install openssh-server
 
-
-
-
-
+# At last
+d-i finish-install/reboot_in_progress note
+d-i finish-install/keep-consoles boolean true
