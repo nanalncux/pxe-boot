@@ -42,13 +42,25 @@ d-i partman-auto/method string raid
 d-i partman-auto/disk string /dev/sda /dev/sdb
 d-i partman-auto/expert_recipe string                                    \
       multiraid ::                                                       \
-              1000 5000 -1 raid                                          \
-                      $primary{ } method{ raid }  $bootable{ } format{ } \
+              100 10 100 raid                                            \
+                      $primary{ } method{ raid }                         \
+          .                                                              \
+              1500 50 1500 raid                                          \
+                      method{ raid }                                     \
+          .                                                              \
+              1500 100 1000000000 raid                                   \
+                      method{ raid }                                     \
           .
 
 d-i partman-auto-raid/recipe string \
-    1 2 0 ext3 /                    \
+    1 2 0 ext4 /boot                \
           /dev/sda1#/dev/sdb1       \
+.                                   \
+    1 2 0 ext4 /bla                 \
+          /dev/sda5#/dev/sdb5       \
+.                                   \
+    1 2 0 ext4 /                    \
+          /dev/sda6#/dev/sdb6       \
 .
 d-i partman-md/confirm boolean true
 d-i partman-md/device_remove_md boolean true
@@ -72,5 +84,18 @@ d-i finish-install/reboot_in_progress note
 d-i finish-install/keep-consoles boolean true
 
 # Packages
-tasksel tasksel/first multiselect standard, web-server, ssh-server
+tasksel tasksel/first multiselect standard, web-server
+
+#Run Customscript
+#in-target chsh -s /bin/bash ; \
+#in-target wget http://192.168.1.1/iface-get-static.sh ; \
+#in-target sh chmod +x iface-get-static.sh ;
+#in-target sh iface-get-static.sh ;
+#in-target rm iface-get-static.sh ;
+
+d-i preseed/late_command string in-target wget -P /tmp/ http://192.168.1.1/iface-get-static.sh; in-target chmod $+x /tmp/iface-get-static.sh; in-target /tmp/iface-get-static.sh`
+
+
+
+
 
