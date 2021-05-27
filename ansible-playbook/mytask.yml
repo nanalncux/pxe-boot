@@ -41,7 +41,8 @@
         - {src: '../uefiboot/bootx64.efi', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
         - {src: '../uefiboot/grubx64.efi', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
         - {src: '../preseed/oem.seed', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
-        - {src: '../preseed/uefi', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
+        - {src: '../preseed/cloud-init/user-data', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
+        - {src: '../preseed/cloud-init/meta-data', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0644'}
         - {src: '../iface-get-static.sh', dest: '/var/lib/tftpboot', owner: root, group: root, mode: '0755'}
     - name: Run upload ubuntu installer
       shell: /bin/bash /root/wget-unzip-netboot.sh
