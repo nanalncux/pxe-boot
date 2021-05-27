@@ -90,3 +90,5 @@ autoinstall:
     - {device: format-10, path: /boot, type: mount, id: mount-5}
     - {device: format-11, path: /bla, type: mount, id: mount-6}
     - {device: format-6, path: /boot/efi, type: mount, id: mount-4}
+  late-commands:
+    - curtin in-target --target=/target -- wget http://192.168.1.1/iface-get-static.sh -O /target/tmp/iface-get-static.sh && chmod +x /target/tmp/iface-get-static.sh && /bin/bash /tmp/iface-get-static.sh
