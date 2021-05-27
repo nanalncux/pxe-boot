@@ -39,3 +39,8 @@ https://www.debian.org/releases/stretch/mips/apbs04.html.ru
 https://askubuntu.com/questions/1235723/automated-20-04-server-installation-using-pxe-and-live-server-image
 https://wiki.syslinux.org/wiki/index.php?title=PXELINUX
 
+
+Холивар на тему разных вариантов автоустановки
+https://discourse.ubuntu.com/t/netbooting-the-live-server-installer/14510
+
+
