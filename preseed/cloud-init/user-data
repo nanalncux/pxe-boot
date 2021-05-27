@@ -1,5 +1,6 @@
 #cloud-config
 autoinstall:
+  version: 1
   apt:
     geoip: true
     preserve_sources_list: false
@@ -10,18 +11,20 @@ autoinstall:
       uri: http://ports.ubuntu.com/ubuntu-ports
   identity: {hostname: ubunte-efi, password: $6$c8E10D5PWZMcCzro$AUDHKm9hZMgS8KxMdUG.20jhCVFSYorHEzNVqhfY51MWMqg82NdKpgwuhFwN82SvaICRKLKNWKHqk6f/k9BHt1,
     realname: ubuntu, username: ubuntu}
-  keyboard: {layout: us, toggle: null, variant: ''}
+  keyboard: {layout: us, variant: ''}
   locale: en_US
   network:
-    ethernets:
-      ens3:
-        addresses: [192.168.1.26/24]
-        critical: true
-        dhcp-identifier: mac
-        gateway4: 192.168.1.1
-        nameservers:
-          addresses: [8.8.8.8]
-    version: 2
+    network:
+      version: 2
+      ethernets:
+        ens3:
+          addresses: [192.168.1.26/24]
+          critical: true
+          dhcp-identifier: mac
+          gateway4: 192.168.1.1
+          nameservers:
+            addresses: [8.8.8.8]
+      version: 2
   ssh:
     allow-pw: true
     authorized-keys: []
