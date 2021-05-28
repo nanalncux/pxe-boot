@@ -1,7 +1,7 @@
 #!/bin/bash
 iface1=$(ip a |grep mtu | grep -v lo |head -n1 | sed 's/\://g' | awk '{print $2}')
 iface2=$(ip a |grep mtu | grep -v lo |tail -n1 | sed 's/\://g' | awk '{print $2}')
-cat > /etc/netplan/00-unstaller-config.yaml << EOF
+cat > /etc/netplan/00-installer-config.yaml << EOF
 network:
   version: 2
   renderer: networkd
