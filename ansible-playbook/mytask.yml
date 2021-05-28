@@ -5,9 +5,11 @@
     - name: Enabled Forwarding
       shell: echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
     - name: mkdir tftpboot grub
-      shell: mkdir /var/lib/tftpboot
+#      shell: mkdir /var/lib/tftpboot
+      ansible.builtin.file: path=/var/lib/tftpboot state=directory mode='0755'
     - name: mkdir grub
-      shell: mkdir /var/lib/tftpboot/grub
+#      shell: mkdir /var/lib/tftpboot/grub
+      ansible.builtin.file: path=/var/lib/tftpboot/grub state=directory mode='0755'
     - name: Install isc-dhcp-server
       apt: name=isc-dhcp-server state=latest
     - name: Install tftpd-hpa
